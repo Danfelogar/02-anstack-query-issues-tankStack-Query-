@@ -37,8 +37,7 @@ export const IssueItem:FC<Props> = ({issue}) => {
   const queryClient = useQueryClient();
 
   // Prefetch data: set data in cache
-  const prefetchData = () => {
-    queryClient.prefetchQuery({
+  const prefetchData = () => { queryClient.prefetchQuery({
       queryKey: ['issues', issue.number],
       queryFn: ()=> getIssue(issue.number),
       staleTime: 1000 * 60,
@@ -77,6 +76,14 @@ export const IssueItem:FC<Props> = ({issue}) => {
           #{issue.number} {timeSinceCreation(issue.created_at)}{' '}
           <span className="font-bold">{issue.user.login}</span>
         </span>
+
+        <div className='flex flex-wrap mt-2 gap-3'>
+          {
+            issue.labels.map((label, idx) => (
+              <span className='px-2 py-1 text-xs text-white rounded-md' style={{ border: `1px solid #${label.color}` }} key={idx}>{label.name}</span>
+            ))
+          }
+        </div>
       </div>
 
       <img
